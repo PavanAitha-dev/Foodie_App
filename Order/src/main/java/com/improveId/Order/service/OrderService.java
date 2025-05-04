@@ -113,18 +113,18 @@ public class OrderService {
           entity.get().setPaymentStatus(result.getStatus());
          orderdata= ordersRepository.save(entity.get());
         }
-        if(result.getStatus().equals(PaymentStatus.SUCCESS))
-        {
-            UserProfileDto cutomer=getUser(result.getCustomerID());
-            RestaurantDto restaurant=getRestaurantById(result.getRestaurantID());
-            MailDto mail=new MailDto();
-            mail.setFullName(cutomer.getFullName());
-            mail.setMailId(cutomer.getEmail());
-            mail.setAmount(result.getAmount());
-            mail.setOrderId(result.getOrderID());
-            mail.setRestaurantName(restaurant.getName());
-            emailClient.sendEmail(mail);
-        }
+//        if(result.getStatus().equals(PaymentStatus.SUCCESS))
+//        {
+//            UserProfileDto cutomer=getUser(result.getCustomerID());
+//            RestaurantDto restaurant=getRestaurantById(result.getRestaurantID());
+//            MailDto mail=new MailDto();
+//            mail.setFullName(cutomer.getFullName());
+//            mail.setMailId(cutomer.getEmail());
+//            mail.setAmount(result.getAmount());
+//            mail.setOrderId(result.getOrderID());
+//            mail.setRestaurantName(restaurant.getName());
+//            emailClient.sendEmail(mail);
+//        }
         return result;
     }
 
