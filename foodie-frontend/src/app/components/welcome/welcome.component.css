@@ -1,0 +1,42 @@
+:host {
+  display: block;
+  height: 100vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  font-family: 'Segoe UI', sans-serif;
+  background-size: cover;
+}
+
+/* Updated styles */
+.welcome-container {
+  width: 100%;
+  /* background-image: url('../../../assets/bg_img.jpg'); Adjusted path for Angular project structure */
+  height: 100%;
+  text-align: center;
+  margin-top: 100px;
+  background-size: contain; /* Adjusted to ensure the entire image fits */
+  background-position: top; /* Positioned the image at the top */
+  color: #ff5722; /* Changed to black */
+  background-size: cover; /* Ensures the image covers the entire container */
+}
+ 
+.actions {
+  margin-top: 40px;
+}
+
+.btn {
+  margin: 0 10px;
+  padding: 10px 25px;
+  font-size: 18px;
+  text-decoration: none;
+  color: white;
+  background-color: #007bff;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}

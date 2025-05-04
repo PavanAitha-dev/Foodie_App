@@ -1,0 +1,32 @@
+<div class="restaurant-menu">
+  <h2>{{ restaurantDetails?.name }}</h2>
+  <p>Rating: ⭐ {{ restaurantDetails?.rating }}</p>
+  <p>Opening Hours: 🕒 {{ restaurantDetails?.openingHours }}</p>
+
+  <div class="item-list">
+    <div *ngFor="let item of items" class="item-card">
+      <h3>{{ item.name }}</h3>
+      <p>₹{{ item.price }}</p>
+      <button (click)="addToCart(item)">Add to Cart</button>
+    </div>
+  </div>
+</div>
+
+<div class="cart-toggle">
+  <button (click)="toggleCart()">🛒 View Cart</button>
+</div>
+
+<div *ngIf="cart.length > 0" class="cart-and-profile" [ngClass]="{'cart-open': cartVisible}">
+  <ul>
+    <li *ngFor="let item of cart">
+      {{ item.name }} x{{ item.quantity }} — ₹{{ item.price * item.quantity }}
+      <button (click)="removeFromCart(item)">Remove</button>
+    </li>
+  </ul>
+
+  <div class="total">
+    Total: ₹{{ getTotal() }}
+    <button class="checkout-btn" (click)="goToOrderPage()">Checkout</button>
+
+  </div>
+</div>

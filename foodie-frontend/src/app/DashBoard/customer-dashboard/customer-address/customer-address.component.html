@@ -1,0 +1,45 @@
+<div class="address-container">
+  <h2>Manage Addresses</h2>
+
+  <form [formGroup]="addressForm" (ngSubmit)="onSubmit()" class="address-form">
+    <textarea formControlName="address" placeholder="Full Address" required></textarea>
+    <input formControlName="landMark" placeholder="Landmark">
+    <input formControlName="pincode" placeholder="Pincode" required pattern="[0-9]{6}">
+    <select formControlName="addressType" required>
+      <option value="" disabled>Select Address Type</option>
+      <option value="HOME">Home</option>
+      <option value="WORK">Work</option>
+      <option value="OTHER">Other</option>
+    </select>
+    <button type="submit" [disabled]="addressForm.invalid">Save Address</button>
+  </form>
+
+  <table *ngIf="addresses.length > 0" class="address-table">
+    <thead>
+      <tr>
+        <th>Address</th>
+        <th>Landmark</th>
+        <th>Pincode</th>
+        <th>Type</th>
+        <th>Actions</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let addr of addresses">
+        <td>{{ addr.address }}</td>
+        <td>{{ addr.landMark }}</td>
+        <td>{{ addr.pincode }}</td>
+        <td>{{ addr.addressType }}</td>
+        <td>
+          <button (click)="editAddress(addr)">Edit</button>
+        </td>
+        <td>
+          <button (click)="deleteAddress(addr.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p *ngIf="addresses.length === 0">No saved addresses yet.</p>
+</div>

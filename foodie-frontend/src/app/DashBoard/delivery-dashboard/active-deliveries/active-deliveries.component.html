@@ -1,0 +1,20 @@
+<h3>Active Deliveries</h3>
+
+<div *ngIf="activeDeliveries.length === 0">
+  <p>No active deliveries right now.</p>
+</div>
+
+<div class="delivery-card" *ngFor="let delivery of activeDeliveries">
+  <h4>DeliveryID : {{ delivery.id }}</h4>
+  <h4>OrderID : {{ delivery.orderId }}</h4>
+  <h4>Restaurant Name : {{ delivery.restaurantName }}</h4>
+  <p><strong>Pickup : </strong> {{ delivery.restaurantAddress }}</p>
+  <p><strong>Deliver To : </strong> {{ delivery.customerName }} - {{ delivery.customerAddress }}</p>
+  <p><strong>Status : </strong> {{ delivery.deliveryStatus }}</p>
+
+  <div class="actions">
+    <button *ngIf="delivery.deliveryStatus === 'ASSIGNED'" (click)="updateStatus(delivery.id, 'PICKED_UP')">Mark as Picked Up</button>
+    <button *ngIf="delivery.deliveryStatus === 'PICKED_UP'" (click)="updateStatus(delivery.id, 'OUT_FOR_DELIVERY')">Out for Delivery</button>
+    <button *ngIf="delivery.deliveryStatus === 'OUT_FOR_DELIVERY'" (click)="updateStatus(delivery.id, 'DELIVERED')">Mark as Delivered</button>
+  </div>
+</div>

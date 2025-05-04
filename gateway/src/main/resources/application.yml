@@ -1,0 +1,52 @@
+server:
+  port: 8080
+  address: 0.0.0.0
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/user/**
+
+        - id: restaurants-service
+          uri:  lb://restaurants-service
+          predicates:
+            - Path=/restaurant/**
+
+        - id: Order-service
+          uri: lb://Order-service
+          predicates:
+            - Path=/order/**
+
+        - id: payment-service
+          uri: lb://payment-service
+          predicates:
+            - Path=/payment/**
+      httpclient:
+        connect-timeout: 1000
+        response-timeout: 5s
+
+#  security:
+#    oauth2:
+#      resourceserver:
+#        jwt:
+#          issuer-uri: http://localhost:9000
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    prefer-ip-address: true
+

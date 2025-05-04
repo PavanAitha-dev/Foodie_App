@@ -1,0 +1,46 @@
+<div class="orders-container">
+    <h2>Track Orders</h2>
+  
+    <table *ngIf="orders.length > 0" class="orders-table">
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Customer</th>
+          <th>Items</th>
+          <th>Total (₹)</th>
+          <th>DeliveredBy</th>
+          <th>PaymentStatus</th>
+          <th>Orderstatus</th>     
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of orders">
+          <td>{{ order.id }}</td>
+          <td>{{ order.customerName }}</td>
+          <td>
+            <ul>
+              <li *ngFor="let item of order.orderedItems">
+                {{ item.quantity }}x{{ item.name }} (Rs.{{ item.price }})
+              </li>
+            </ul>
+          </td>
+          <td>{{ order.totalPrice }}</td>
+          <td>{{ order.deliveryPersonName}}</td>
+          <td>{{ order.paymentStatus }}</td>
+          <td>{{ order.orderStatus }}</td>
+          <td>
+            <select [value]="order.orderStatus" #statusSelect (change)="updateStatus(order.id,  statusSelect.value)">
+              <option value="PREPARING">PREPARING</option>
+              <option value="READY_FOR_DELIVERY">READY_FOR_DELIVERY</option>
+              <option value="OUT_FOR_DELIVERY">OUT_FOR_DELIVERY</option>
+              <option value="CANCELLED_BY_RESTAURANT">CANCELLED_BY_RESTAURANT</option>
+            </select>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <p *ngIf="orders.length === 0">No orders found.</p>
+  </div>
+  

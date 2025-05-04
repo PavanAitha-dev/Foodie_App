@@ -1,0 +1,20 @@
+<app-header></app-header>
+<div class="dashboard">
+  <h2>Welcome, {{ fullName }}</h2>
+
+  <nav>
+    <button (click)="activeTab = 'available'">Available Orders</button>
+    <button (click)="activeTab = 'active'">Active Deliveries</button>
+    <button (click)="activeTab = 'history'">Delivery History</button>
+  </nav>
+
+  <div *ngIf="activeTab === 'available'">
+    <app-available-orders></app-available-orders>
+  </div>
+  <div *ngIf="activeTab === 'active'">
+    <app-active-deliveries></app-active-deliveries>
+  </div>
+  <div *ngIf="activeTab === 'history'">
+    <app-delivery-history></app-delivery-history>
+  </div>
+</div>

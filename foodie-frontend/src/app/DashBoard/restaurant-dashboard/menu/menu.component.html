@@ -1,0 +1,51 @@
+<div class="menu-container">
+    <h2>Manage Menu</h2>
+  
+    <form [formGroup]="menuForm" (ngSubmit)="onSubmit()" class="menu-form">
+      <input formControlName="name" placeholder="Item Name" required>
+      <select formControlName="category" required>
+        <option value="" disabled>Select Category</option>
+        <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+      </select>
+      <input formControlName="description" placeholder="Description">
+      <input formControlName="price" type="number" placeholder="Price" required>
+      <select formControlName="isVegetarian" required>
+        <option value="true">Vegetarian</option>
+        <option value="false">Non-Vegetarian</option>
+      </select>
+      <button type="submit" [disabled]="menuForm.invalid">Add Item</button>
+    </form>
+  
+    <table *ngIf="menuItems.length > 0" class="menu-table">
+      <thead>
+        <tr>
+          <th>Item ID</th>
+          <th>Name</th>
+          <th>Category</th>
+          <th>Description</th>
+          <th>Price (₹)</th>
+          <th>Vegetarian</th>
+          <th>Actions</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of menuItems">
+          <td>{{ item.itemId }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.category }}</td>
+          <td>{{ item.description }}</td>
+          <td>{{ item.price }}</td>
+          <td>{{ item.isVegetarian ? 'Yes' : 'No' }}</td>
+          <td>
+            <button (click)="editItem(item)">Edit</button>
+          <td>
+            <button (click)="deleteItem(item.itemId)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <p *ngIf="menuItems.length === 0">No menu items yet.</p>
+  </div>
+  

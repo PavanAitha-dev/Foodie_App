@@ -1,0 +1,19 @@
+server:
+  port: 8761
+
+spring:
+  application:
+    name: eureka-server
+
+eureka:
+  client:
+    register-with-eureka: false   # Since this is the server, it should not register itself
+    fetch-registry: false         # No need to fetch registry
+  server:
+    wait-time-in-ms-when-sync-empty: 0
+    enable-self-preservation: false  # Optional: Disable in dev to avoid self-preservation mode
+
+logging:
+  level:
+    com.netflix.eureka: INFO
+    org.springframework.cloud.netflix.eureka: INFO

@@ -1,0 +1,23 @@
+<div class="profile-container" *ngIf="!loading">
+    <h2>Restaurant Profile</h2>
+  
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="profile-form">
+      <label>Name:</label>
+      <input formControlName="name" placeholder="Restaurant Name">
+  
+      <label>Address:</label>
+      <input formControlName="address" placeholder="Address">
+  
+      <label>ContactNumber:</label>
+      <input formControlName="contactNumber" placeholder="Contact Number">
+
+      <label>OpeningHours</label>
+      <input formControlName="openingHours" placeholder="Opening Hours">
+
+  
+      <button type="submit" [disabled]="profileForm.invalid">Update Profile</button>
+    </form>
+  </div>
+  
+  <p *ngIf="loading">Loading...</p>
+  

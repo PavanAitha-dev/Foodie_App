@@ -1,0 +1,13 @@
+<h3>Available Orders</h3>
+
+<div *ngIf="availableOrders.length === 0">
+  <p>No available orders at the moment.</p>
+</div>
+
+<div class="order-card" *ngFor="let order of availableOrders">
+  <h4>Order ID : {{ order.orderId }}</h4>
+  <h4>Restaurant Name : {{ order.restaurantName }}</h4>
+  <p><strong>Pickup : </strong> {{ order.restaurantAddress }}</p>
+  <p><strong>Delivery Location : </strong>{{ order.customerAddress}}</p>
+  <button (click)="acceptOrder(order)">Accept Order</button>
+</div>

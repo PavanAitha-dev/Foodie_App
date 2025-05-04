@@ -1,0 +1,25 @@
+<div class="order-summary">
+    <h2>Order Summary</h2>
+  <h4>DeliveryAddress:</h4>
+  <h5>{{ selectedAddress }}</h5>
+    <ul>
+      <li *ngFor="let item of cart">
+        {{ item.name }} x{{ item.quantity }} — ₹{{ item.price * item.quantity }}
+      </li>
+    </ul>
+  
+    <hr>
+  
+    <p>Subtotal: ₹{{ getItemsTotal() }}</p>
+    <p>Tax (5%): ₹{{ getTax() }}</p>
+    <p>Platform Fee: ₹{{ platformFee }}</p>
+    <p>Restaurant Charges: ₹{{ restaurantCharges }}</p>
+    <p>Delivery Charges: ₹{{ deliveryCharges }}</p>
+  
+    <hr>
+  
+    <h3>Total: ₹{{ getGrandTotal() }}</h3>
+  
+    <button (click)="goToPaymentPage()">Pay Now</button>
+  </div>
+  

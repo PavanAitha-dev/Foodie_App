@@ -1,0 +1,30 @@
+server:
+  port: 8085
+spring:
+  application:
+    name: email-service
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: foodieprk@gmail.com
+    password: ndnm jgre iudv zodx
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql: TRACE
+
+

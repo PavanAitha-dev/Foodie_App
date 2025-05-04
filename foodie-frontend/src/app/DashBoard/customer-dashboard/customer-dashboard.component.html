@@ -1,0 +1,49 @@
+<div class="customer-dashboard">
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="logo">Foodie 🍽️</div>
+
+    <div class="address-selector" (click)="toggleAddressDropdown()">
+      <span class="location-icon">📍</span>
+      <span class="selected-address">{{ selectedAddress || 'Select delivery address' }}</span>
+      <span class="dropdown-arrow">▼</span>
+    
+      <!-- Address Dropdown -->
+      <ul class="address-dropdown" [ngClass]="{ 'show': showAddressDropdown }">
+        <li *ngFor="let address of addresses" (click)="selectAddress(address); $event.stopPropagation()">
+          {{ formatAddress(address) }}
+        </li>
+      </ul>
+    </div>
+
+    <!-- Profile Dropdown -->
+    <div class="profile-dropdown" (click)="toggleProfileDropdown()">
+      <span class="profile-icon">Profile👤</span>
+      <ul class="dropdown-menu" [ngClass]="{ 'show': showProfileDropdown }">
+        <!-- <li routerLink="/account-settings">👤 Profile</li>
+        <li routerLink="/update-profile">✏️ Update Profile</li> -->
+        <li routerLink="/my-orders">📦 Orders</li>
+        <li routerLink="/customer-address">🏠 Addresses</li>
+        <li (click)="logout()">🚪 Logout</li>
+      </ul>
+    </div>
+  </div>
+
+<h2>Welcome {{ fullName }}</h2>
+
+  <div class="search-section">
+    <input type="text" placeholder="Search for restaurants or food..." [(ngModel)]="searchQuery" />
+    <button (click)="search()">Search</button>
+  </div>
+
+  <!-- Restaurant Cards -->
+  <div class="restaurant-grid">
+    <div
+      class="restaurant-card"
+      *ngFor="let restaurant of restaurants"
+      (click)="openRestaurantMenu(restaurant)">
+        <h3>{{ restaurant.name }}</h3>
+        <p>⭐ {{ restaurant.rating }} | ⏱️ {{ restaurant.openingHours }}</p>
+    </div>
+  </div>
+</div>

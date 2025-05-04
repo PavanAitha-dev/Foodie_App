@@ -1,0 +1,54 @@
+h3 {
+  margin-bottom: 16px;
+  font-size: 24px;
+  color: #333;
+}
+
+.delivery-card {
+  background-color: #f9f9f9;
+  border-left: 6px solid #007bff;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.delivery-card h4 {
+  margin: 6px 0;
+  color: #444;
+}
+
+.delivery-card p {
+  margin: 4px 0;
+  color: #555;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.actions button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  background-color: #007bff;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.actions button:hover {
+  background-color: #0056b3;
+}
+
+.actions button:active {
+  background-color: #004494;
+}
+
+.actions button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}

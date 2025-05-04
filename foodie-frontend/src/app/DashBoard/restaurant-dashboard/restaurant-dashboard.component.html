@@ -1,0 +1,25 @@
+<app-header></app-header>
+<div class="dashboard-container">
+    <h1>Welcome, {{ fullName }}</h1>
+    <h2>{{restaurantName}} Restaurant Admin Dashboard</h2>
+  
+    <div class="card-grid">
+      <div class="card">
+       <a routerLink="menu"><h3>Manage Menu</h3>
+        <p>Add, edit, or remove menu items.</p>
+       </a>
+      </div>
+      <div class="card">
+        <a routerLink="orders"> <h3>Track Orders</h3>
+        <p>View current and past orders.</p>
+        </a>
+      </div>
+      <div class="card">
+        <a routerLink="profile">  <h3>Restaurant Info</h3>
+        <p>Update restaurant details.</p>
+        </a>
+      </div>
+    </div>
+    <router-outlet></router-outlet>
+  </div>
+  

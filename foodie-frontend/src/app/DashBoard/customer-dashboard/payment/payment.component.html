@@ -1,0 +1,42 @@
+<div class="payment-page">
+  <h2>Select Payment Method</h2>
+
+  <div class="payment-options">
+    <label>
+      <input type="radio" name="paymentMethod" [(ngModel)]="selectedPayment" value="UPI" />
+      UPI
+    </label>
+
+    <label>
+      <input type="radio" name="paymentMethod" [(ngModel)]="selectedPayment" value="CreditCard" />
+      Credit Card
+    </label>
+
+    <label>
+      <input type="radio" name="paymentMethod" [(ngModel)]="selectedPayment" value="DebitCard" />
+      Debit Card
+    </label>
+
+    <label>
+      <input type="radio" name="paymentMethod" [(ngModel)]="selectedPayment" value="CashonDelivery" />
+      Cash on Delivery
+    </label>
+  </div>
+
+  <!-- Conditional Forms -->
+  <div *ngIf="selectedPayment === 'UPI'" class="payment-form">
+    <input type="text" [(ngModel)]="upiId" placeholder="Enter UPI ID" />
+  </div>
+
+  <div *ngIf="selectedPayment === 'CreditCard' || selectedPayment === 'DebitCard'" class="payment-form">
+    <input type="text" [(ngModel)]="cardNumber" placeholder="Card Number" maxlength="16" />
+    <input type="text" [(ngModel)]="expiryDate" placeholder="Expiry Date (MM/YY)" maxlength="5" />
+    <input type="password" [(ngModel)]="cvv" placeholder="CVV" maxlength="3" />
+  </div>
+
+  <div class="total-amount">
+    Total to Pay: ₹{{ GrandTotal }}
+  </div>
+
+  <button class="pay-now" (click)="confirmPayment()">Pay Now</button>
+</div>

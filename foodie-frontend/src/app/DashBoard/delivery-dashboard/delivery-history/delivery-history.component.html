@@ -1,0 +1,13 @@
+<h3>Delivery History</h3>
+
+<div *ngIf="deliveryHistory.length === 0">
+  <p>You haven’t completed any deliveries yet.</p>
+</div>
+
+<div class="delivery-card" *ngFor="let delivery of deliveryHistory">
+  <h4>DeliveryID : {{ delivery.id }}</h4>
+  <h4>OrderID : {{ delivery.orderId }}</h4>
+  <h4>Restaurant Name : {{ delivery.restaurantName }}</h4>
+  <p><strong>Pickup : </strong> {{ delivery.restaurantAddress }}</p>
+  <p><strong>Deliver To : </strong> {{ delivery.customerName }} - {{ delivery.customerAddress }}</p>
+  <p><strong>Status : </strong> {{ delivery.deliveryStatus }}</p>

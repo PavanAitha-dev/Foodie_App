@@ -1,0 +1,31 @@
+<h2>Admin Reports</h2>
+
+<div class="report-cards">
+  <div class="card">
+    <h3>Total Orders</h3>
+    <p>{{ totalOrders }}</p>
+  </div>
+
+  <div class="card">
+    <h3>Total Revenue</h3>
+    <p>₹{{ totalRevenue }}</p>
+  </div>
+</div>
+
+<h3>Top Restaurants</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Total Orders</th>
+      <th>Revenue</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let r of topRestaurants">
+      <td>{{ r.id }}</td>
+      <td>{{ r.orderCount }}</td>
+      <td>₹{{ r.revenue }}</td>
+    </tr>
+  </tbody>
+</table>
