@@ -1,0 +1,19 @@
+# Java
+**/target/
+*.log
+*.class
+*.jar
+*.war
+
+# Node / Angular
+**/node_modules/
+**/dist/
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
