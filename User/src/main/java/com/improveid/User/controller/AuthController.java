@@ -3,7 +3,10 @@ package com.improveid.User.controller;
 import com.improveid.User.dto.AddressDto;
 import com.improveid.User.dto.LoginRequest;
 import com.improveid.User.dto.RegisterRequest;
+import com.improveid.User.exception.AlreadyExistsException;
+import com.improveid.User.exception.NotFoundException;
 import com.improveid.User.service.AuthService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +19,11 @@ import java.util.Map;
 public class AuthController {
     private final AuthService authService;
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) throws Exception {
         return ResponseEntity.ok(authService.register(request));
     }
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request) {
         return ResponseEntity.ok(authService.login(request));
     }
     @GetMapping("/list")
@@ -33,7 +36,7 @@ public class AuthController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
     @GetMapping("/findById/{id}")
-    public ResponseEntity<?>getById(@PathVariable Long id) {
+    public ResponseEntity<?>getById(@PathVariable Long id) throws NotFoundException {
         return ResponseEntity.ok(authService.getUser(id));
     }
     @GetMapping("/idName")
@@ -41,16 +44,16 @@ public class AuthController {
         return ResponseEntity.ok(authService.getIdName());
     }
     @PostMapping("/addAddress")
-    public ResponseEntity<String> addAddressToCustomer(@RequestBody AddressDto request) {
+    public ResponseEntity<String> addAddressToCustomer( @Valid @RequestBody AddressDto request) throws NotFoundException {
         authService.addAddress(request);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
     @GetMapping("/getAddressById/{id}")
-    public ResponseEntity<?>getAddressById(@PathVariable Long id) {
+    public ResponseEntity<?>getAddressById(@PathVariable Long id) throws NotFoundException {
         return ResponseEntity.ok(authService.getAllAddressesById(id));
     }
     @PutMapping("/editAddressById/{id}")
-    public ResponseEntity<?> addAddress(@RequestBody AddressDto request,@PathVariable Long id) {
+    public ResponseEntity<?> addAddress( @Valid @RequestBody AddressDto request,@PathVariable Long id) throws NotFoundException {
         return ResponseEntity.ok(authService.updateAddress(request,id));
     }
     @DeleteMapping("/deleteAddress/{id}")

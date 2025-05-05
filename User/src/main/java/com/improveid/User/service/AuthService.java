@@ -5,8 +5,11 @@ import com.improveid.User.dto.AddressDto;
 import com.improveid.User.dto.LoginRequest;
 import com.improveid.User.dto.RegisterRequest;
 import com.improveid.User.dto.UserProfileDto;
+import com.improveid.User.exception.AlreadyExistsException;
 import com.improveid.User.exception.BadRequestException;
 import com.improveid.User.entity.*;
+import com.improveid.User.exception.InvalidtDataException;
+import com.improveid.User.exception.NotFoundException;
 import com.improveid.User.repository.AddressRepository;
 import com.improveid.User.repository.LoginRepository;
 import com.improveid.User.repository.RoleRepository;
@@ -27,16 +30,22 @@ public class AuthService {
     private final AddressRepository addressRepo;
 
     @Transactional
-    public UserProfile register(RegisterRequest req) {
+    public UserProfile register(RegisterRequest req) throws Exception {
+        if (req==null){
+            throw new InvalidtDataException("Enter valid Details");
+        }
+
         if (loginRepo.findByUsername(req.getUsername()).isPresent()) {
-            throw new RuntimeException("Username already exists");
+            throw new AlreadyExistsException("Username already exists");
+        }
+        if (userRepo.findByEmail(req.getEmail()).isPresent()) {
+            throw new AlreadyExistsException("Email already exists");
         }
         Login login = new Login();
         login.setUsername(req.getUsername());
         login.setPassword(req.getPassword());
         Role role = roleRepo.findByRoleName(req.getRole())
-              .orElseThrow(() -> new RuntimeException("Role not found"));
-        loginRepo.save(login);
+              .orElseThrow(() -> new NotFoundException("Role not found"));
         UserProfile user = new UserProfile();
         user.setLogin(login);
         user.setRole(role);
@@ -47,6 +56,7 @@ public class AuthService {
     }
 
     public UserProfileDto login(LoginRequest req) {
+
         Optional<Login> loginOpt = loginRepo.findByUsername(req.getUsername());
 
         if (loginOpt.isEmpty()) {
@@ -82,8 +92,11 @@ public class AuthService {
     public void deleteUser(Long ID) {
        userRepo.deleteById(ID);
     }
-    public UserProfileDto getUser(Long id) {
+    public UserProfileDto getUser(Long id) throws NotFoundException {
         Optional<UserProfile> user=userRepo.findById(id);
+        if(user.isEmpty()){
+            throw new NotFoundException("User Not found");
+        }
         UserProfileDto userDto=new UserProfileDto();
         userDto.setUserID(user.get().getUserId());
         userDto.setEmail(user.get().getEmail());
@@ -103,8 +116,11 @@ public class AuthService {
 
     }
 
-    public Address addAddress(AddressDto request) {
+    public Address addAddress(AddressDto request) throws NotFoundException {
         Optional<UserProfile> user=userRepo.findById(request.getUserId());
+        if(user.isEmpty()){
+            throw new NotFoundException("User Not found");
+        }
         Address address= Address.builder()
                 .address(request.getAddress())
                 .addressType(AddressType.valueOf(request.getAddressType()))
@@ -115,8 +131,11 @@ public class AuthService {
         Address result=addressRepo.save(address);
         return result;
     }
-    public Object getAllAddressesById(Long id) {
+    public Object getAllAddressesById(Long id) throws NotFoundException {
         Optional<UserProfile> user=userRepo.findById(id);
+        if(user.isEmpty()){
+            throw new NotFoundException("User Not found");
+        }
         List<Address> list=addressRepo.findByUser(user.get());
         List<AddressDto> addressDtoList=new ArrayList<>();
         for(Address address:list){
@@ -132,8 +151,11 @@ public class AuthService {
         return addressDtoList;
     }
 
-    public Object updateAddress(AddressDto request, Long id) {
+    public Object updateAddress(AddressDto request, Long id) throws NotFoundException {
         Optional<UserProfile> user=userRepo.findById(request.getUserId());
+        if(user.isEmpty()){
+            throw new NotFoundException("User Not found");
+        }
         Address address= Address.builder()
                 .address(request.getAddress())
                 .addressType(AddressType.valueOf(request.getAddressType()))

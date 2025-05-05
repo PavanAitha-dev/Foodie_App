@@ -30,3 +30,14 @@ eureka:
 #  level:
 #    org.hibernate.SQL: NONE
 #    org.hibernate.type.descriptor.sql: NONE
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+
