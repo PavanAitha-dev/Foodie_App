@@ -2,7 +2,6 @@ package com.improveid.User.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -18,7 +17,7 @@ public class UserProfile {
     @NotNull(message = "Login reference is required")
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "login_id")
-    private Login login;
+    private User login;
 
     @NotNull(message = "Role is required")
     @ManyToOne

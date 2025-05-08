@@ -35,12 +35,6 @@ spring:
         connect-timeout: 1000
         response-timeout: 5s
 
-#  security:
-#    oauth2:
-#      resourceserver:
-#        jwt:
-#          issuer-uri: http://localhost:9000
-
 eureka:
   client:
     service-url:
@@ -50,3 +44,5 @@ eureka:
   instance:
     prefer-ip-address: true
 
+jwt:
+  secret: 0123456789&abcdefghijklmnopqrstuvwxyz&9876543210

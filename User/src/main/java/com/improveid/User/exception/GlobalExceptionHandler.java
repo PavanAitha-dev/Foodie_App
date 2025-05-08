@@ -32,6 +32,15 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorEntity> handleIllegalArgument(IllegalArgumentException ex) {
+        ErrorEntity error=new ErrorEntity();
+        error.setMessage(ex.getMessage());
+        error.setStatus(HttpStatus.BAD_REQUEST.value());
+        error.setError("IllegalArgument");
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ErrorEntity> handleNotFoundException(NotFoundException ex) {
@@ -51,6 +60,16 @@ public class GlobalExceptionHandler {
         error.setError("Bad Request");
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(InvalidtDataException.class)
+    public ResponseEntity<ErrorEntity> handleInvalidDataException(InvalidtDataException ex) {
+        ErrorEntity error=new ErrorEntity();
+        error.setMessage(ex.getMessage());
+        error.setStatus(HttpStatus.BAD_REQUEST.value());
+        error.setError("Invalid Data Error");
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
 //    @ExceptionHandler(TransactionSystemException.class)
 //    public ResponseEntity<ErrorEntity> handleTransactionSystemException(TransactionSystemException ex, WebRequest request) {
 //        String message = "User Details already Exist";

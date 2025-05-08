@@ -29,6 +29,15 @@ public class GlobalExceptionHandler {
         error.setError("Validation Failed");
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorEntity> handleIllegalArgument(IllegalArgumentException ex) {
+        ErrorEntity error=new ErrorEntity();
+        error.setMessage(ex.getMessage());
+        error.setStatus(HttpStatus.BAD_REQUEST.value());
+        error.setError("IllegalArgument");
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ItemNotFoundException.class)
@@ -37,6 +46,15 @@ public class GlobalExceptionHandler {
         error.setMessage(ex.getMessage());
         error.setStatus(HttpStatus.NOT_FOUND.value());
         error.setError("Item Not Found");
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(CategoryNotFoundException.class)
+    public ResponseEntity<ErrorEntity> handleCategoryNotFoundException(CategoryNotFoundException ex) {
+        ErrorEntity error=new ErrorEntity();
+        error.setMessage(ex.getMessage());
+        error.setStatus(HttpStatus.NOT_FOUND.value());
+        error.setError("Category Not Found");
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -55,6 +73,15 @@ public class GlobalExceptionHandler {
         error.setMessage(ex.getMessage());
         error.setStatus(HttpStatus.BAD_REQUEST.value());
         error.setError("Bad Request");
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(InvalidtDataException.class)
+    public ResponseEntity<ErrorEntity> handleInvalidDataException(InvalidtDataException ex) {
+        ErrorEntity error=new ErrorEntity();
+        error.setMessage(ex.getMessage());
+        error.setStatus(HttpStatus.BAD_REQUEST.value());
+        error.setError("Invalid Data Error");
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 }

@@ -1,14 +1,15 @@
 package com.improveid.User.repository;
 
-import com.improveid.User.entity.Login;
+import com.improveid.User.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface LoginRepository extends JpaRepository<Login, Long> {
-    Optional<Login> findByUsername(String username);
+public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByUsername(String username);
+
 }
 
 

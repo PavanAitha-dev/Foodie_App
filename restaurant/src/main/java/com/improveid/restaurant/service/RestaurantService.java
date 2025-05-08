@@ -34,7 +34,7 @@ public class RestaurantService {
     public Restaurant updateRestaurant(Long id,RestaurantDto dto) throws RestaurantNotFoundException {
         Optional<Restaurant> restaurant = restaurantRepository.findById(id);
         if(restaurant.isEmpty()){
-            throw new RestaurantNotFoundException("Restaurant not found in updation");
+            throw new RestaurantNotFoundException("Restaurant not found in updation"+id);
         }
         restaurant.get().setName(dto.getName());
         restaurant.get().setAddress(dto.getAddress());
@@ -47,14 +47,13 @@ public class RestaurantService {
         Optional<Restaurant> restaurant = restaurantRepository.findById(Cdto.getRestaurantId());
 
         if (restaurant.isEmpty()) {
-            throw new RestaurantNotFoundException("Restaurant not Found ");
+            throw new RestaurantNotFoundException("Restaurant not Found "+Cdto.getRestaurantId());
         }
         MenuCategory cat = new MenuCategory();
         cat.setName(Cdto.getName());
         cat.setRestaurant(restaurant.get());
         return menuCategoryRepository.save(cat);
     }
-
 
     public Item addItem(ItemDto dto) throws RestaurantNotFoundException {
         Optional<MenuCategory> menuCategory=menuCategoryRepository.findByNameContainingAndRestaurantId(dto.getCategory(),dto.getRestaurantId());
@@ -108,17 +107,14 @@ public class RestaurantService {
         return restaurant;
     }
 
-    public void updateStatus(Long id, String status) {
+    public void updateStatus(Long id, String status) throws RestaurantNotFoundException {
         Restaurant restaurant = restaurantRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Restaurant not found"));
+                .orElseThrow(() -> new RestaurantNotFoundException("Restaurant not found"+id));
         restaurant.setStatus(status);
         restaurantRepository.save(restaurant);
     }
 
     public List<ItemDto> findAllItems(Long restaurantId) {
-//        List<MenuCategory> categories=categoryRepository.findAllByRestaurantIdNative(restaurantId);
-//        for(MenuCategory category:categories){
-//        }
         List<Item> items = itemRepository.findAllByCategoryRestaurantId(restaurantId);
         items.sort((x,y)-> Math.toIntExact(x.getId() - y.getId()));
 
@@ -138,7 +134,7 @@ public class RestaurantService {
     public RestaurantDto RestaurantById(Long id) throws RestaurantNotFoundException {
         Optional<Restaurant> rest=restaurantRepository.findById(id);
         if (rest.isEmpty()) {
-            throw new RestaurantNotFoundException("Restaurant not Found ");
+            throw new RestaurantNotFoundException("Restaurant not Found "+id);
         }
         Restaurant restaurant=rest.get();
         RestaurantDto dto = new RestaurantDto();

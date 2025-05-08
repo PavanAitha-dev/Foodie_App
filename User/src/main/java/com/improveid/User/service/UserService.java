@@ -2,16 +2,14 @@ package com.improveid.User.service;
 
 
 import com.improveid.User.dto.AddressDto;
-import com.improveid.User.dto.LoginRequest;
 import com.improveid.User.dto.RegisterRequest;
 import com.improveid.User.dto.UserProfileDto;
 import com.improveid.User.exception.AlreadyExistsException;
-import com.improveid.User.exception.BadRequestException;
 import com.improveid.User.entity.*;
 import com.improveid.User.exception.InvalidtDataException;
 import com.improveid.User.exception.NotFoundException;
 import com.improveid.User.repository.AddressRepository;
-import com.improveid.User.repository.LoginRepository;
+import com.improveid.User.repository.UserRepository;
 import com.improveid.User.repository.RoleRepository;
 import com.improveid.User.repository.UserProfileRepository;
 import jakarta.transaction.Transactional;
@@ -22,11 +20,11 @@ import java.util.*;
 
 @Service
 @AllArgsConstructor
-public class AuthService {
+public class UserService {
 
-    private final LoginRepository loginRepo;
+    private final UserRepository userRepo;
     private final RoleRepository roleRepo;
-    private final UserProfileRepository userRepo;
+    private final UserProfileRepository userDetailRepo;
     private final AddressRepository addressRepo;
 
     @Transactional
@@ -35,13 +33,13 @@ public class AuthService {
             throw new InvalidtDataException("Enter valid Details");
         }
 
-        if (loginRepo.findByUsername(req.getUsername()).isPresent()) {
+        if (userRepo.findByUsername(req.getUsername()).isPresent()) {
             throw new AlreadyExistsException("Username already exists");
         }
-        if (userRepo.findByEmail(req.getEmail()).isPresent()) {
+        if (userDetailRepo.findByEmail(req.getEmail()).isPresent()) {
             throw new AlreadyExistsException("Email already exists");
         }
-        Login login = new Login();
+        User login = new User();
         login.setUsername(req.getUsername());
         login.setPassword(req.getPassword());
         Role role = roleRepo.findByRoleName(req.getRole())
@@ -51,32 +49,32 @@ public class AuthService {
         user.setRole(role);
         user.setFullName(req.getFullName());
         user.setEmail(req.getEmail());
-        userRepo.save(user);
+        userDetailRepo.save(user);
         return user;
     }
 
-    public UserProfileDto login(LoginRequest req) {
-
-        Optional<Login> loginOpt = loginRepo.findByUsername(req.getUsername());
-
-        if (loginOpt.isEmpty()) {
-            throw new BadRequestException("Invalid username");
-        }
-        else if (!(loginOpt.get().getPassword().equals(req.getPassword()))) {
-            throw new BadRequestException("Invalid password");
-        }
-            Optional<UserProfile>userProfile=userRepo.findByLoginId(loginOpt.get().getId());
-        UserProfileDto userProfileDto=new UserProfileDto();
-        userProfileDto.setUserID(userProfile.get().getUserId());
-        userProfileDto.setUsername(userProfile.get().getLogin().getUsername());
-        userProfileDto.setFullName(userProfile.get().getFullName());
-        userProfileDto.setEmail(userProfile.get().getEmail());
-        userProfileDto.setRoleID(userProfile.get().getRole().getRoleId());
-
-        return userProfileDto;
-    }
+//    public UserProfileDto login(LoginRequest req) {
+//
+//        Optional<User> loginOpt = userRepo.findByUsername(req.getUsername());
+//
+//        if (loginOpt.isEmpty()) {
+//            throw new BadRequestException("Invalid username");
+//        }
+//        else if (!(loginOpt.get().getPassword().equals(req.getPassword()))) {
+//            throw new BadRequestException("Invalid password");
+//        }
+//            Optional<UserProfile>userProfile= userDetailRepo.findByLoginId(loginOpt.get().getId());
+//        UserProfileDto userProfileDto=new UserProfileDto();
+//        userProfileDto.setUserID(userProfile.get().getUserId());
+//        userProfileDto.setUsername(userProfile.get().getLogin().getUsername());
+//        userProfileDto.setFullName(userProfile.get().getFullName());
+//        userProfileDto.setEmail(userProfile.get().getEmail());
+//        userProfileDto.setRoleID(userProfile.get().getRole().getRoleId());
+//
+//        return userProfileDto;
+//    }
     public List<UserProfileDto> getAllUsers() {
-        List<UserProfile> userProfiles=userRepo.findAll();
+        List<UserProfile> userProfiles= userDetailRepo.findAll();
         List<UserProfileDto> users =new ArrayList<>();
         for (UserProfile userProfile:userProfiles){
             UserProfileDto userProfileDto=new UserProfileDto();
@@ -90,10 +88,10 @@ public class AuthService {
         return users;
     }
     public void deleteUser(Long ID) {
-       userRepo.deleteById(ID);
+       userDetailRepo.deleteById(ID);
     }
     public UserProfileDto getUser(Long id) throws NotFoundException {
-        Optional<UserProfile> user=userRepo.findById(id);
+        Optional<UserProfile> user= userDetailRepo.findById(id);
         if(user.isEmpty()){
             throw new NotFoundException("User Not found");
         }
@@ -107,7 +105,7 @@ public class AuthService {
     }
 
     public Map<Long,String> getIdName() {
-        List<UserProfile> userProfiles=userRepo.findAll();
+        List<UserProfile> userProfiles= userDetailRepo.findAll();
         Map<Long,String> data=new HashMap<>();
         for (UserProfile userProfile:userProfiles){
             data.put(userProfile.getUserId(),userProfile.getFullName());
@@ -117,7 +115,7 @@ public class AuthService {
     }
 
     public Address addAddress(AddressDto request) throws NotFoundException {
-        Optional<UserProfile> user=userRepo.findById(request.getUserId());
+        Optional<UserProfile> user= userDetailRepo.findById(request.getUserId());
         if(user.isEmpty()){
             throw new NotFoundException("User Not found");
         }
@@ -132,7 +130,7 @@ public class AuthService {
         return result;
     }
     public Object getAllAddressesById(Long id) throws NotFoundException {
-        Optional<UserProfile> user=userRepo.findById(id);
+        Optional<UserProfile> user= userDetailRepo.findById(id);
         if(user.isEmpty()){
             throw new NotFoundException("User Not found");
         }
@@ -152,7 +150,7 @@ public class AuthService {
     }
 
     public Object updateAddress(AddressDto request, Long id) throws NotFoundException {
-        Optional<UserProfile> user=userRepo.findById(request.getUserId());
+        Optional<UserProfile> user= userDetailRepo.findById(request.getUserId());
         if(user.isEmpty()){
             throw new NotFoundException("User Not found");
         }
