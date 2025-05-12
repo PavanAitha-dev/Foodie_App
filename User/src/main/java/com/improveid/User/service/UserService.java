@@ -2,10 +2,12 @@ package com.improveid.User.service;
 
 
 import com.improveid.User.dto.AddressDto;
+import com.improveid.User.dto.LoginRequest;
 import com.improveid.User.dto.RegisterRequest;
 import com.improveid.User.dto.UserProfileDto;
 import com.improveid.User.exception.AlreadyExistsException;
 import com.improveid.User.entity.*;
+import com.improveid.User.exception.BadRequestException;
 import com.improveid.User.exception.InvalidtDataException;
 import com.improveid.User.exception.NotFoundException;
 import com.improveid.User.repository.AddressRepository;
@@ -53,26 +55,19 @@ public class UserService {
         return user;
     }
 
-//    public UserProfileDto login(LoginRequest req) {
-//
-//        Optional<User> loginOpt = userRepo.findByUsername(req.getUsername());
-//
-//        if (loginOpt.isEmpty()) {
-//            throw new BadRequestException("Invalid username");
-//        }
-//        else if (!(loginOpt.get().getPassword().equals(req.getPassword()))) {
-//            throw new BadRequestException("Invalid password");
-//        }
-//            Optional<UserProfile>userProfile= userDetailRepo.findByLoginId(loginOpt.get().getId());
-//        UserProfileDto userProfileDto=new UserProfileDto();
-//        userProfileDto.setUserID(userProfile.get().getUserId());
-//        userProfileDto.setUsername(userProfile.get().getLogin().getUsername());
-//        userProfileDto.setFullName(userProfile.get().getFullName());
-//        userProfileDto.setEmail(userProfile.get().getEmail());
-//        userProfileDto.setRoleID(userProfile.get().getRole().getRoleId());
-//
-//        return userProfileDto;
-//    }
+    public UserProfileDto login(LoginRequest req) {
+
+        Optional<User> loginOpt = userRepo.findByUsername(req.getUsername());
+        Optional<UserProfile>userProfile= userDetailRepo.findByLoginId(loginOpt.get().getId());
+        UserProfileDto userProfileDto=new UserProfileDto();
+        userProfileDto.setUserID(userProfile.get().getUserId());
+        userProfileDto.setUsername(userProfile.get().getLogin().getUsername());
+        userProfileDto.setFullName(userProfile.get().getFullName());
+        userProfileDto.setEmail(userProfile.get().getEmail());
+        userProfileDto.setRoleID(userProfile.get().getRole().getRoleId());
+
+        return userProfileDto;
+    }
     public List<UserProfileDto> getAllUsers() {
         List<UserProfile> userProfiles= userDetailRepo.findAll();
         List<UserProfileDto> users =new ArrayList<>();

@@ -9,4 +9,5 @@ public class UserProfileDto {
     public String fullName;
     public String email;
     public Long roleID;
+    public String token;
 }

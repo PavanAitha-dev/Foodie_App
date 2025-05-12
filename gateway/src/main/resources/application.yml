@@ -1,6 +1,5 @@
 server:
   port: 8080
-  address: 0.0.0.0
 
 spring:
   application:
@@ -31,10 +30,10 @@ spring:
           uri: lb://payment-service
           predicates:
             - Path=/payment/**
+
       httpclient:
         connect-timeout: 1000
         response-timeout: 5s
-
 eureka:
   client:
     service-url:
@@ -46,3 +45,10 @@ eureka:
 
 jwt:
   secret: 0123456789&abcdefghijklmnopqrstuvwxyz&9876543210
+  expiration-ms: 86400000 # 24 hours
+
+#logging:
+#  level:
+#    com.improveid.gateway.filter: DEBUG
+#    org.springframework.web.reactive: DEBUG
+#    org.springframework.cloud.gateway: TRACE
