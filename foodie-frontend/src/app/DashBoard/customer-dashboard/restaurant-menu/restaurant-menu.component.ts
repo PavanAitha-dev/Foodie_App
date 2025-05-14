@@ -28,8 +28,8 @@ export class RestaurantMenuComponent implements OnInit {
     } else {
       this.restaurantId = +this.route.snapshot.paramMap.get('id')!;
     }
-    // const storedCart = localStorage.getItem('cart');
-    // this.cart = storedCart ? JSON.parse(storedCart) : [];
+     const storedCart = localStorage.getItem(`cart+${this.restaurantId}`);
+     this.cart = storedCart ? JSON.parse(storedCart) : [];
     localStorage.setItem('restaurantId', this.restaurantId.toString());
     // localStorage.removeItem('cart');
 
@@ -48,13 +48,13 @@ export class RestaurantMenuComponent implements OnInit {
     } else {
       this.cart.push({ ...item, quantity: 1 });
     }
-    localStorage.setItem('cart', JSON.stringify(this.cart));
+    localStorage.setItem(`cart+${this.restaurantId}`, JSON.stringify(this.cart));
     console.log('Cart updated:', this.cart);
   }
 
   removeFromCart(item: any) {
     this.cart = this.cart.filter(i => i.itemId !== item.itemId);
-    localStorage.setItem('cart', JSON.stringify(this.cart));
+    localStorage.setItem(`cart+${this.restaurantId}`, JSON.stringify(this.cart));
     console.log('Item removed from cart:', item);
   }
 

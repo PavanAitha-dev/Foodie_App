@@ -1,37 +1,35 @@
 <div class="orders-container">
     <h2>Track Orders</h2>
-  
-    <table *ngIf="orders.length > 0" class="orders-table">
-      <thead>
-        <tr>
-          <th>Order ID</th>
-          <th>Customer</th>
-          <th>Items</th>
-          <th>Total (₹)</th>
-          <th>DeliveredBy</th>
-          <th>PaymentStatus</th>
-          <th>Orderstatus</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let order of orders">
-          <td>{{ order.id }}</td>
-          <td>{{ order.customerName }}</td>
-          <td>
-            <ul>
-              <li *ngFor="let item of order.orderedItems">
-                {{ item.quantity }}x{{ item.name }} (Rs.{{ item.price }})
-              </li>
-            </ul>
-          </td>
-          <td>{{ order.totalPrice }}</td>
-          <td>{{ order.deliveryPersonName}}</td>
-          <td>{{ order.paymentStatus }}</td>
-          <td>{{ order.orderStatus }}</td>
-        </tr>
-      </tbody>
-    </table>
-  
-    <p *ngIf="orders.length === 0">No orders found.</p>
-  </div>
-  
+    <p *ngIf="orders.length === 0" class="no-orders">No orders found.</p>
+    <div class="order-card" *ngFor="let order of orders">
+        <h3>Order ID: {{ order.id }}</h3>
+        <h4>Restaurant: {{ order.restaurantName }}</h4>
+        <ul>
+            <li *ngFor="let item of order.orderedItems">
+                {{ item.quantity }}x {{ item.name }} (Rs.{{ item.price }})
+            </li>
+        </ul>
+        <h3>Total: Rs. {{ order.totalPrice }}</h3>
+
+        <!-- Rating Section -->
+        <div *ngIf="order.rating">
+            <h4>Your Rating:</h4>
+            <span *ngFor="let star of [1, 2, 3, 4, 5]" 
+                  [class.filled]="star <= order.rating" 
+                  [class.empty]="star > order.rating">
+                ★
+            </span>
+        </div>
+        <div *ngIf="!order.rating">
+            <h4>Rate this order:</h4>
+            <span *ngFor="let star of [1, 2, 3, 4, 5]" 
+                  (click)="submitRating(order, star)" 
+                  class="star" 
+                  [class.selected]="star <= order.tempRating"
+                  (mouseover)="order.tempRating = star" 
+                  (mouseleave)="order.tempRating = 0">
+                ★
+            </span>
+        </div>
+    </div>
+</div>

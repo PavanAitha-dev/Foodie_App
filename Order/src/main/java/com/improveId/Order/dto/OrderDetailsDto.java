@@ -17,5 +17,6 @@ public class OrderDetailsDto {
     private OrderStatus orderStatus;
     private String deliveryPersonName;
     private String deliveryAddress;
+    private Long rating;
     private List<ItemDetailsDto> orderedItems = new ArrayList<>();
 }

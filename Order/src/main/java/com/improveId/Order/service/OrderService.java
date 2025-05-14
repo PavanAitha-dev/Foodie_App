@@ -94,6 +94,7 @@ public class OrderService {
 
             orderDetailsDtos.add(orderDetailsDto);
         }
+        orderDetailsDtos.sort((a,b)-> Math.toIntExact(b.getId() - a.getId()));
         return orderDetailsDtos;
     }
     public RestaurantDto getRestaurantById(Long id) {
@@ -143,12 +144,15 @@ public class OrderService {
     public Object getOrdersByCustomerId(Long customerId) {
 
         Map<Long,String> data=userClient.getIdName();
+        Map<Long, recordRestaurant> restaurantsData=restaurantClient.getRestaurantsIdNameAddress();
         List<OrderDetailsEntity> orders=ordersRepository.findBycustomerId(customerId);
         List<OrderDetailsDto> orderDetailsDtos = new ArrayList<>();
         for(OrderDetailsEntity order:orders) {
             OrderDetailsDto orderDetailsDto=new OrderDetailsDto();
             List<ItemDetailsDto> itemDetailsDtos = new ArrayList<>();
             orderDetailsDto.setId(order.getId());
+            orderDetailsDto.setRestaurantName(restaurantsData.get(order.getRestaurantId()).name());
+            orderDetailsDto.setRating(order.getRating());
             orderDetailsDto.setTotalPrice(order.getTotalPrice());
             orderDetailsDto.setPaymentStatus(order.getPaymentStatus());
             orderDetailsDto.setOrderStatus(order.getOrderStatus());
@@ -163,9 +167,9 @@ public class OrderService {
                 itemDetailsDtos.add(itemDto);
             }
             orderDetailsDto.setOrderedItems(itemDetailsDtos);
-
             orderDetailsDtos.add(orderDetailsDto);
         }
+        orderDetailsDtos.sort((a,b)-> Math.toIntExact(b.getId() - a.getId()));
         return orderDetailsDtos;
 
     }
@@ -186,6 +190,7 @@ public class OrderService {
            readyforDeliveryDto.setDeliveryPersonId(order.getDeliveryPersonId());
            readyforDeliveryDtoList.add(readyforDeliveryDto);
         }
+        readyforDeliveryDtoList.sort((a,b)-> Math.toIntExact(b.getId() - a.getId()));
         return readyforDeliveryDtoList;
     }
 
@@ -211,17 +216,20 @@ public class OrderService {
         List<DeliveryDetailsEntity> detailsEntityList=deliveryRepository.findByDeliveryPersonId(id);
         List<DeliveryDto> deliveryDtoList=new ArrayList<>();
         for(DeliveryDetailsEntity deliveryDetails:detailsEntityList){
+            if(!deliveryDetails.getStatus().equals(DeliveryStatus.DELIVERED)) {
             DeliveryDto deliveryDto=new DeliveryDto();
-            deliveryDto.setId(deliveryDetails.getId());
-            deliveryDto.setOrderId(deliveryDetails.getOrderId());
-            deliveryDto.setRestaurantName(deliveryDetails.getRestaurantName());
-            deliveryDto.setRestaurantAddress(deliveryDetails.getPickupLocation());
-            deliveryDto.setCustomerAddress(deliveryDetails.getDeliveryLocation());
-            deliveryDto.setCustomerName(deliveryDetails.getCustomerName());
-            deliveryDto.setDeliveryPersonId(deliveryDetails.getDeliveryPersonId());
-            deliveryDto.setDeliveryStatus(String.valueOf(deliveryDetails.getStatus()));
-            deliveryDtoList.add(deliveryDto);
+                deliveryDto.setId(deliveryDetails.getId());
+                deliveryDto.setOrderId(deliveryDetails.getOrderId());
+                deliveryDto.setRestaurantName(deliveryDetails.getRestaurantName());
+                deliveryDto.setRestaurantAddress(deliveryDetails.getPickupLocation());
+                deliveryDto.setCustomerAddress(deliveryDetails.getDeliveryLocation());
+                deliveryDto.setCustomerName(deliveryDetails.getCustomerName());
+                deliveryDto.setDeliveryPersonId(deliveryDetails.getDeliveryPersonId());
+                deliveryDto.setDeliveryStatus(String.valueOf(deliveryDetails.getStatus()));
+                deliveryDtoList.add(deliveryDto);
+            }
         }
+        deliveryDtoList.sort((a,b)-> Math.toIntExact(b.getId() - a.getId()));
         return deliveryDtoList;
     }
 
@@ -246,6 +254,15 @@ public class OrderService {
             deliveryDto.setDeliveryStatus(String.valueOf(deliveryDetails.getStatus()));
             deliveryDtoList.add(deliveryDto);
         }
+        deliveryDtoList.sort((a,b)-> Math.toIntExact(b.getId() - a.getId()));
         return deliveryDtoList;
+    }
+
+    public void updateRating(Long id, Long rating) {
+        Optional<OrderDetailsEntity> orderDetails=ordersRepository.findById(id);
+        if(orderDetails.isPresent()){
+            orderDetails.get().setRating(rating);
+        }
+        ordersRepository.save(orderDetails.get());
     }
 }

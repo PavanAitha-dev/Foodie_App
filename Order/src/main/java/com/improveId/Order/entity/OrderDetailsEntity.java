@@ -44,4 +44,6 @@ import java.util.List;
 
         private String deliveryAddress;
 
+        private Long rating;
+
 }

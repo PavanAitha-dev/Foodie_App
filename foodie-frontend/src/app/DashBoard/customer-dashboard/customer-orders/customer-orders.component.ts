@@ -29,4 +29,17 @@ export class CustomerOrdersComponent implements OnInit {
         });
     }
   }
+submitRating(order: any, rating: number): void {
+    order.rating = rating;  // Update the order rating
+    console.log(`Order ID: ${order.id}, Rating: ${order.rating}`);
+    this.http.put(`http://localhost:8080/order/updateRating/${order.id}`, order.rating)
+        .subscribe((data: any) => {
+          console.log('Rating updated successfully:', data);
+          this.fetchOrders(); // Refresh the orders after updating the rating
+        });
+}
+
+
+
+
 }

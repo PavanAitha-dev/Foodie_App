@@ -71,6 +71,11 @@ public class OrderController {
     public ResponseEntity<?> getAllDeliveriesByDeliveryPersonId(@PathVariable Long id) {
         return ResponseEntity.ok(orderSer.getAllDeliveries(id));
     }
+    @PutMapping("/updateRating/{id}")
+    public ResponseEntity<Void>updateOrderRating(@PathVariable Long id,@RequestBody Long rating) {
+        orderSer.updateRating(id,rating);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
 
 
 }
