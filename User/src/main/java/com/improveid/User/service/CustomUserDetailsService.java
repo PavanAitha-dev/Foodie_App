@@ -2,6 +2,7 @@ package com.improveid.User.service;
 
 import com.improveid.User.entity.User;
 import com.improveid.User.entity.UserProfile;
+import com.improveid.User.exception.BadRequestException;
 import com.improveid.User.repository.UserProfileRepository;
 import com.improveid.User.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,18 +24,18 @@ public class CustomUserDetailsService implements UserDetailsService {
     private UserProfileRepository userProfileRepository;
 
 
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
         List<Object> list=new ArrayList<>();
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+                .orElseThrow(() -> new BadRequestException("User not found with username: " + username));
 
         UserProfile userProfile = userProfileRepository.findByLoginId(user.getId())
-                .orElseThrow(() -> new UsernameNotFoundException("User profile not found for user: " + username));
+                .orElseThrow(() -> new BadRequestException("User profile not found for user: " + username));
 
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),
-                Collections.singleton(new SimpleGrantedAuthority(userProfile.getRole().getRoleName()))
+                Collections.singleton(new SimpleGrantedAuthority(userProfile.getRole().getRoleName().toUpperCase()))
         );
     }
 

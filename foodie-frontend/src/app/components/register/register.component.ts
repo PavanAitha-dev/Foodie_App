@@ -33,7 +33,7 @@ export class RegisterComponent {
             this.router.navigate(['/']);
           },
           error: (err) => {
-            alert('Registration failed');
+            alert('Registration failed: ' + err.error.message);
             console.error(err);
           }
         });

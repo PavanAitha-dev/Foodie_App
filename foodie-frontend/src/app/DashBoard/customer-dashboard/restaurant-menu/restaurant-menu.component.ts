@@ -16,7 +16,7 @@ export class RestaurantMenuComponent implements OnInit {
   items: any[] = [];
   cart: any[] = [];
   restaurantDetails: any;
-  cartVisible: boolean = false;
+  cartVisible: boolean = true;
 
   constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router) {}
 

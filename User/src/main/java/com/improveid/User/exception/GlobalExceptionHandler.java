@@ -3,6 +3,7 @@ package com.improveid.User.exception;
 import com.improveid.User.entity.ErrorEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -29,6 +30,16 @@ public class GlobalExceptionHandler {
         error.setMessage(ex.getMessage());
         error.setStatus(HttpStatus.BAD_REQUEST.value());
         error.setError("Validation Failed");
+
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorEntity> handleCredentials(BadCredentialsException ex) {
+        ErrorEntity error=new ErrorEntity();
+        error.setMessage(ex.getMessage());
+        error.setStatus(HttpStatus.UNAUTHORIZED.value());
+        error.setError("BadCredentials");
 
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }

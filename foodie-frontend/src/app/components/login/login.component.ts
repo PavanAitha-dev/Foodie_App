@@ -23,7 +23,7 @@ export class LoginComponent {
 
   onSubmit(): void {
   if (this.loginForm.valid) {
-    this.http.post('http://localhost:8080/user/login', this.loginForm.value)
+    this.http.post('http://localhost:8080/user/auth/login', this.loginForm.value)
       .subscribe({
         next: (res: any) => {
           localStorage.clear();
@@ -31,6 +31,7 @@ export class LoginComponent {
           localStorage.setItem('roleId', res.roleID);
           localStorage.setItem('fullName', res.fullName);
           localStorage.setItem('userId', res.userID);
+          localStorage.setItem('token', res.token); // Store the JWT token
 
           if (res.roleID === 2) {
             this.http.get(`http://localhost:8080/restaurant/by-user/${res.email}`).subscribe({
@@ -61,8 +62,8 @@ export class LoginComponent {
             this.router.navigate(['/delivery-dashboard']);
           }
         },
-        error: () => {
-          alert('Invalid username or password');
+        error: (res) => {
+          alert(res.error.message);
         }
       });
   }

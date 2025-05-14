@@ -1,6 +1,7 @@
 package com.improveid.User.controller;
 
 import com.improveid.User.dto.LoginRequest;
+import com.improveid.User.dto.RegisterRequest;
 import com.improveid.User.dto.UserProfileDto;
 import com.improveid.User.service.CustomUserDetailsService;
 import com.improveid.User.service.UserService;
@@ -47,7 +48,6 @@ public class AuthController {
 //        String token = jwtUtil.generateToken(userDetails);
 //        return ResponseEntity.ok(Map.of("token", token));
 
-        try {
             UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
 
             // Manual password check
@@ -60,9 +60,9 @@ public class AuthController {
             userProfileDto.setToken(token);
             return ResponseEntity.ok(userProfileDto);
 
-        } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
-        }
-
+    }
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) throws Exception {
+        return ResponseEntity.ok(userService.register(request));
     }
 }

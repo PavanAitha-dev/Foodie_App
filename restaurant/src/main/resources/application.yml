@@ -41,3 +41,5 @@ management:
     health:
       show-details: always
 
+jwt:
+  secret: 0123456789&abcdefghijklmnopqrstuvwxyz&9876543210
