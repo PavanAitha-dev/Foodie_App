@@ -80,6 +80,7 @@ public class UserService {
             userProfileDto.setRoleID(userProfile.getRole().getRoleId());
             users.add(userProfileDto);
         }
+        users.sort((a,b)-> Math.toIntExact(a.userID - b.userID));
         return users;
     }
     public void deleteUser(Long ID) {

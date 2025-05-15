@@ -28,10 +28,9 @@ export class RestaurantMenuComponent implements OnInit {
     } else {
       this.restaurantId = +this.route.snapshot.paramMap.get('id')!;
     }
-     const storedCart = localStorage.getItem(`cart+${this.restaurantId}`);
-     this.cart = storedCart ? JSON.parse(storedCart) : [];
+    const storedCart = localStorage.getItem(`cart+${this.restaurantId}`);
+    this.cart = storedCart ? JSON.parse(storedCart) : [];
     localStorage.setItem('restaurantId', this.restaurantId.toString());
-    // localStorage.removeItem('cart');
 
     this.loadItems();
   }
@@ -44,18 +43,41 @@ export class RestaurantMenuComponent implements OnInit {
   addToCart(item: any) {
     const existingItem = this.cart.find(i => i.itemId === item.itemId);
     if (existingItem) {
-      existingItem.quantity += 1;
+      this.increaseQuantity(item);
     } else {
       this.cart.push({ ...item, quantity: 1 });
+      this.updateCart();
     }
-    localStorage.setItem(`cart+${this.restaurantId}`, JSON.stringify(this.cart));
-    console.log('Cart updated:', this.cart);
+  }
+
+  increaseQuantity(item: any) {
+    const existingItem = this.cart.find(i => i.itemId === item.itemId);
+    if (existingItem) {
+      existingItem.quantity += 1;
+      this.updateCart();
+    }
+  }
+
+  decreaseQuantity(item: any) {
+    const existingItem = this.cart.find(i => i.itemId === item.itemId);
+    if (existingItem) {
+      existingItem.quantity -= 1;
+      if (existingItem.quantity <= 0) {
+        this.removeFromCart(item);
+      } else {
+        this.updateCart();
+      }
+    }
   }
 
   removeFromCart(item: any) {
     this.cart = this.cart.filter(i => i.itemId !== item.itemId);
+    this.updateCart();
+  }
+
+  updateCart() {
     localStorage.setItem(`cart+${this.restaurantId}`, JSON.stringify(this.cart));
-    console.log('Item removed from cart:', item);
+    console.log('Cart updated:', this.cart);
   }
 
   getTotal(): number {
@@ -65,8 +87,8 @@ export class RestaurantMenuComponent implements OnInit {
   toggleCart(): void {
     this.cartVisible = !this.cartVisible;
   }
-goToOrderPage() {
-  this.router.navigate(['/order-summary'], { state: { cart: this.cart } });
-}
 
+  goToOrderPage() {
+    this.router.navigate(['/order-summary'], { state: { cart: this.cart } });
+  }
 }

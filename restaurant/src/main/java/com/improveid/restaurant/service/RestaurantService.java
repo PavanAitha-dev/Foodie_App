@@ -90,7 +90,7 @@ public class RestaurantService {
             dto.setStatus(restaurant.getStatus());
                 list.add(dto);
         }
-//        list.sort((a,b)-> Math.toIntExact(a.getId() - b.getId()));
+        list.sort((a,b)-> Math.toIntExact(a.getId() - b.getId()));
         return list;
     }
 
@@ -111,6 +111,7 @@ public class RestaurantService {
         Restaurant restaurant = restaurantRepository.findById(id)
                 .orElseThrow(() -> new RestaurantNotFoundException("Restaurant not found"+id));
         restaurant.setStatus(status);
+
         restaurantRepository.save(restaurant);
     }
 

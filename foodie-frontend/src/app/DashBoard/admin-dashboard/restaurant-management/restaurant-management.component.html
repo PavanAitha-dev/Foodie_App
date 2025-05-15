@@ -9,7 +9,6 @@
       <th>Address</th>
       <th>Rating</th>
       <th>Opening_hours</th>
-      <th>Status</th>
       <th>Action</th>
       <th>Delete</th>
     </tr>
@@ -23,7 +22,6 @@
       <td>{{ r.address}}</td>
       <td>{{ r.rating}}</td>
       <td>{{ r.openingHours}}</td>
-      <td>{{ r.status }}</td>
       <td>
         <select [value]="r.status" #statusSelect (change)="updateStatus(r.id, statusSelect.value)">
           <option value="ON_HOLD">On Hold</option>

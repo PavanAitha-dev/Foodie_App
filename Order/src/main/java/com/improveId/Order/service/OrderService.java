@@ -136,7 +136,7 @@ public class OrderService {
         if(order.isPresent()){
             order.get().setOrderStatus(status);
         }
-       ordersRepository.save(order.get());
+        ordersRepository.save(order.get());
 
     }
 
@@ -236,6 +236,9 @@ public class OrderService {
     public void updateDeliveryStatus(Long id, String status) {
         Optional<DeliveryDetailsEntity> deliveryDetailsEntity=deliveryRepository.findById(id);
         deliveryDetailsEntity.get().setStatus(DeliveryStatus.valueOf(status));
+//        if(deliveryDetailsEntity.get().getStatus().equals(OrderStatus.DELIVERED)){
+//            updateStatus();
+//        }
         deliveryRepository.save(deliveryDetailsEntity.get());
     }
 
