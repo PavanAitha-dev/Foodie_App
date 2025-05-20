@@ -20,6 +20,9 @@ export class LoginComponent {
       password: ['', Validators.required],
     });
   }
+  ngOnInit(): void {
+    localStorage.clear();
+  }
 
   onSubmit(): void {
   if (this.loginForm.valid) {

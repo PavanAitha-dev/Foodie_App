@@ -10,6 +10,7 @@
             </li>
         </ul>
         <h3>Total: Rs. {{ order.totalPrice }}</h3>
+        <h3>Status: {{ order.orderStatus }}</h3>
 
         <!-- Rating Section -->
         <ng-container *ngIf="order.orderStatus === 'DELIVERED'">

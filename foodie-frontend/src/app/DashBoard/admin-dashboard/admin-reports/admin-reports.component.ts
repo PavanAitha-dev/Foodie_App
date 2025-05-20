@@ -22,7 +22,7 @@ export class AdminReportsComponent implements OnInit {
   }
 
   loadReports() {
-    this.http.get<any>('http://localhost:8080/orders/report').subscribe(data => {
+    this.http.get<any>('http://localhost:8080/order/report').subscribe(data => {
       this.totalOrders = data.totalOrders;
       this.totalRevenue = data.totalRevenue;
       this.topRestaurants = data.topRestaurants;

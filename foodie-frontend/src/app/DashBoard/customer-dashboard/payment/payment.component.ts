@@ -108,6 +108,7 @@ export class PaymentComponent {
 
       console.log('Payment successful!', response);
       alert(`Payment of ₹${this.GrandTotal} successful with ${this.selectedPayment}! 🎉`);
+      localStorage.removeItem(`cart+${this.restaurantId}`);
       this.router.navigate(['/customer-dashboard']);
 
     } catch (error) {

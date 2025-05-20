@@ -4,8 +4,12 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -40,10 +44,13 @@ import java.util.List;
         private List<ItemsDetailsEntity> orderedItems = new ArrayList<>();
 
         @Column(name = "order_status")
+        @Enumerated(EnumType.STRING)
         private OrderStatus orderStatus;
 
         private String deliveryAddress;
 
         private Long rating;
+
+        private LocalDateTime orderTimestamp;
 
 }

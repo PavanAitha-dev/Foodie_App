@@ -1,6 +1,5 @@
 package com.improveId.Order.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.improveId.Order.dto.DeliveryDto;
 import com.improveId.Order.dto.OrderDto;
 import com.improveId.Order.service.OrderService;
@@ -29,9 +28,9 @@ public class OrderController {
     public ResponseEntity<?> getAllOrdersByCustomedId(@PathVariable Long customerId) {
         return ResponseEntity.ok(orderSer.getOrdersByCustomerId(customerId));
     }
-    @GetMapping("/report/{id}")
-    public ResponseEntity<?> orderReport(@PathVariable Long id) {
-        return ResponseEntity.ok(orderSer.getRestaurantById(id));
+    @GetMapping("/report")
+    public ResponseEntity<?> orderReport() {
+        return ResponseEntity.ok(orderSer.appReport());
     }
     @GetMapping("/user/{id}")
     public ResponseEntity<?> user(@PathVariable Long id) {

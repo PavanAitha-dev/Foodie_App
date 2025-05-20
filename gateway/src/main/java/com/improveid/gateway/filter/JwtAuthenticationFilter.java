@@ -19,7 +19,7 @@ import java.nio.charset.StandardCharsets;
 
 
 @Component
-public class JwtAuthenticationFilter implements GlobalFilter  { // Changed to WebFilter
+public class  JwtAuthenticationFilter implements GlobalFilter  { // Changed to WebFilter
 
 
     private final JwtUtil jwtUtil;

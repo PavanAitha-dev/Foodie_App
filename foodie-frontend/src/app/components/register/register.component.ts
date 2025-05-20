@@ -23,10 +23,13 @@ export class RegisterComponent {
       role: ['', Validators.required]
     });
   }
+  ngOnInit(): void {
+    localStorage.clear();
+  }
 
   onSubmit() {
     if (this.registerForm.valid) {
-      this.http.post('http://localhost:8080/user/register', this.registerForm.value)
+      this.http.post('http://localhost:8080/user/auth/register', this.registerForm.value)
         .subscribe({
           next: (res) => {
             alert('Registration successful!');

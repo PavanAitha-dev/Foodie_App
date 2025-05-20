@@ -16,15 +16,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.*;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-
 public class OrderService {
     private final OrdersRepository ordersRepository;
     private final OrderedItemsRepository itemsRepo;
@@ -50,6 +49,7 @@ public class OrderService {
         orderDetails.setDeliveryAddress(orderDto.getDeliveryAddress());
         List<ItemsDetailsEntity> itemsDetailsEntities = getItemsDetailsEntities(orderDto, orderDetails);
         orderDetails.setOrderedItems(itemsDetailsEntities);
+        orderDetails.setOrderTimestamp(LocalDateTime.now());
         orderDetails = ordersRepository.save(orderDetails);
 
         return orderDetails;
@@ -190,7 +190,7 @@ public class OrderService {
            readyforDeliveryDto.setDeliveryPersonId(order.getDeliveryPersonId());
            readyforDeliveryDtoList.add(readyforDeliveryDto);
         }
-        readyforDeliveryDtoList.sort((a,b)-> Math.toIntExact(b.getId() - a.getId()));
+        readyforDeliveryDtoList.sort((a,b)-> Math.toIntExact(b.getOrderId() - a.getOrderId()));
         return readyforDeliveryDtoList;
     }
 
@@ -236,9 +236,9 @@ public class OrderService {
     public void updateDeliveryStatus(Long id, String status) {
         Optional<DeliveryDetailsEntity> deliveryDetailsEntity=deliveryRepository.findById(id);
         deliveryDetailsEntity.get().setStatus(DeliveryStatus.valueOf(status));
-//        if(deliveryDetailsEntity.get().getStatus().equals(OrderStatus.DELIVERED)){
-//            updateStatus();
-//        }
+        if(status.equalsIgnoreCase("Delivered")){
+            updateStatus(deliveryDetailsEntity.get().getOrderId(),OrderStatus.DELIVERED.toString());
+        }
         deliveryRepository.save(deliveryDetailsEntity.get());
     }
 
@@ -268,4 +268,53 @@ public class OrderService {
         }
         ordersRepository.save(orderDetails.get());
     }
+
+    public ReportDto appReport() {
+        List<OrderDetailsEntity> totalOrders = ordersRepository.todayOrdersByTimestamp(LocalDateTime.of(LocalDate.now(), LocalTime.MIN));
+        Map<Long, recordRestaurant> restaurantsData = restaurantClient.getRestaurantsIdNameAddress();
+
+        Map<Long, Long> orderCount = new HashMap<>();
+        Map<Long, Double> revenue = new HashMap<>();
+        double totalRevenue = 0.0;
+        for (OrderDetailsEntity orderDetails : totalOrders) {
+            Long restaurantId = orderDetails.getRestaurantId();
+            double orderTotal = orderDetails.getTotalPrice();
+
+            orderCount.put(restaurantId, orderCount.getOrDefault(restaurantId, 0L) + 1);
+            revenue.put(restaurantId, revenue.getOrDefault(restaurantId, 0.0) + orderTotal);
+            totalRevenue += orderTotal;
+        }
+        List<Order> topRestaurants = new ArrayList<>();
+        long maxOrderCount = -1L;
+
+        for (Map.Entry<Long, Long> entry : orderCount.entrySet()) {
+            Long restaurantId = entry.getKey();
+            Long count = entry.getValue();
+            double restaurantRevenue = revenue.getOrDefault(restaurantId, 0.0);
+            if (count > maxOrderCount) {
+                maxOrderCount = count;
+                topRestaurants.clear();
+                topRestaurants.add(new Order(
+                        restaurantId,
+                        restaurantsData.get(restaurantId).name(),
+                        count,
+                        restaurantRevenue
+                ));
+            } else if (count == maxOrderCount) {
+                topRestaurants.add(new Order(
+                        restaurantId,
+                        restaurantsData.get(restaurantId).name(),
+                        count,
+                        restaurantRevenue
+                ));
+            }
+        }
+        ReportDto reportDto = new ReportDto();
+        reportDto.setTotalOrders((long) totalOrders.size());
+        reportDto.setTotalRevenue(totalRevenue);
+        reportDto.setTopRestaurants(topRestaurants);
+
+        return reportDto;
+    }
+
 }
