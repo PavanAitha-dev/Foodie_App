@@ -4,6 +4,16 @@ server:
 spring:
   application:
     name: api-gateway
+  zipkin:
+    base-url: http://localhost:9411
+    management:
+      tracing:
+        sampling:
+          probability: 1.0  # Always trace
+      endpoints:
+        web:
+          exposure:
+            include: "*"
   cloud:
     gateway:
       discovery:
@@ -38,11 +48,10 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
-    fetch-registry: true
     register-with-eureka: true
+    fetch-registry: true
   instance:
     prefer-ip-address: true
-
 jwt:
   secret: 0123456789&abcdefghijklmnopqrstuvwxyz&9876543210
   expiration-ms: 86400000 # 24 hours

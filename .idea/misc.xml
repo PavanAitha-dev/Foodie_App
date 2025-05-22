@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/EmailToUser" />
+    <file type="web" url="file://$PROJECT_DIR$/Eureka-server" />
+    <file type="web" url="file://$PROJECT_DIR$/gateway" />
+    <file type="web" url="file://$PROJECT_DIR$/Order" />
+    <file type="web" url="file://$PROJECT_DIR$/Payment" />
+    <file type="web" url="file://$PROJECT_DIR$/restaurant" />
+    <file type="web" url="file://$PROJECT_DIR$/User" />
+  </component>
   <component name="ProjectRootManager" version="2" project-jdk-name="21" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>

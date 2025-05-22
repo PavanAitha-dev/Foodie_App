@@ -10,7 +10,7 @@
 /* Updated styles */
 .welcome-container {
   width: 100%;
-  background-image: url('../../../assets/bg_img.jpg'); /* Adjusted path for Angular project structure*/
+  /* background-image: url('../../../assets/bg_img.jpg'); Adjusted path for Angular project structure */
   height: 100%;
   text-align: center;
   margin-top: 100px;

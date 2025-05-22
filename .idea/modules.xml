@@ -2,16 +2,15 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/EmailToUser.iml" filepath="$PROJECT_DIR$/.idea/modules/EmailToUser.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/EmailToUser.main.iml" filepath="$PROJECT_DIR$/.idea/modules/EmailToUser.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Eureka-server.iml" filepath="$PROJECT_DIR$/.idea/modules/Eureka-server.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Order.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Order.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Payment.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Payment.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/Project.iml" filepath="$PROJECT_DIR$/.idea/Project.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/User.iml" filepath="$PROJECT_DIR$/.idea/modules/User.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/User.main.iml" filepath="$PROJECT_DIR$/.idea/modules/User.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/gateway.iml" filepath="$PROJECT_DIR$/.idea/modules/gateway.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/restaurant.iml" filepath="$PROJECT_DIR$/.idea/modules/restaurant.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.improveId.Order.main.iml" filepath="$PROJECT_DIR$/.idea/modules/com.improveId.Order.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.improveId.Payment.main.iml" filepath="$PROJECT_DIR$/.idea/modules/com.improveId.Payment.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.improveid.User.main.iml" filepath="$PROJECT_DIR$/.idea/modules/com.improveid.User.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.improveid.restaurant.main.iml" filepath="$PROJECT_DIR$/.idea/modules/com.improveid.restaurant.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/restaurant.main.iml" filepath="$PROJECT_DIR$/.idea/modules/restaurant.main.iml" />
     </modules>
   </component>

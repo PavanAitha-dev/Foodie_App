@@ -21,12 +21,15 @@ ext {
 	set('springCloudVersion', "2024.0.1")
 }
 dependencies {
-	// Spring Cloud Gateway (Reactive)
+	// tracing & Zipkin
+	implementation 'io.micrometer:micrometer-tracing-bridge-brave'
+	implementation 'io.zipkin.reporter2:zipkin-reporter-brave'
+	// Spring Cloud Gateway
 	implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
 
 	// Reactive Spring Security
 	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-webflux'  // ⭐️ Replaces web
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'  //  Replaces web
 
 	// Service Discovery
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
