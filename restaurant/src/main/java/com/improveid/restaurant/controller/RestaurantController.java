@@ -23,7 +23,7 @@ public class RestaurantController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Void> updateRestaurantStatus(@PathVariable Long id, @RequestBody RestaurantDto dto) throws RestaurantNotFoundException {
+    public ResponseEntity<Void> updateRestaurant(@PathVariable Long id, @RequestBody RestaurantDto dto) throws RestaurantNotFoundException {
         Rservice.updateRestaurant(id,dto);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }

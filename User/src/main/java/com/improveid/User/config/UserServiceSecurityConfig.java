@@ -25,6 +25,11 @@ public class UserServiceSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/user/auth/**").permitAll()
                         .requestMatchers("/user/list").hasAuthority("ADMIN")
+                        .requestMatchers("/user/delete/**").hasAuthority("ADMIN")
+                        .requestMatchers("/user/addAddress").hasAuthority("CUSTOMER")
+                        .requestMatchers("/user/editAddressById/**").hasAuthority("CUSTOMER")
+                        .requestMatchers("user/findById/**").authenticated()
+                        .requestMatchers("/user/idName/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)

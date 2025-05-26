@@ -22,10 +22,17 @@ public class RestaurantServiceSecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("restaurant/addItem").hasAuthority("COADMIN")
+                        .requestMatchers("restaurant/addRest").hasAuthority("COADMIN")
+                        .requestMatchers("restaurant/update/**").hasAuthority("COADMIN")
+                        .requestMatchers("restaurant/delete/**").hasAuthority("COADMIN")
+                        .requestMatchers("restaurant/delete/**").hasAuthority("ADMIN")
+                        .requestMatchers("restaurant/status/**").hasAuthority("ADMIN")
+                        .requestMatchers("restaurant/all").hasAnyAuthority("CUSTOMER", "ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
-                .build();
+               .build();
     }
 
     @Bean
