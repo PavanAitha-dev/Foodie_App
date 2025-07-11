@@ -5,6 +5,7 @@ import com.improveId.Payment.dto.*;
 import com.improveId.Payment.entity.PaymentEntity;
 import com.improveId.Payment.entity.PaymentStatus;
 import com.improveId.Payment.repository.PaymentRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class PaymentService {
 
     private final PaymentRepository paymentRepository;
@@ -21,45 +23,44 @@ public class PaymentService {
     @Autowired
     ObjectMapper objectMapper;
 
-    private final Map<String, PaymentStrategy> paymentStrategies;
-
-    @Autowired
-    public PaymentService(List<PaymentStrategy> strategyList, PaymentRepository paymentRepository) {
-        this.paymentRepository = paymentRepository;
-        paymentStrategies = new HashMap<>();
-        for (PaymentStrategy strategy : strategyList) {
-            String beanName = strategy.getClass().getAnnotation(Component.class).value();
-            //cashOnDelivery
-            paymentStrategies.put(beanName, strategy);
-        }
-    }
+//    private final Map<String, PaymentStrategy> paymentStrategies;
+//    @Autowired
+//    public PaymentService(List<PaymentStrategy> strategyList, PaymentRepository paymentRepository) {
+//        this.paymentRepository = paymentRepository;
+//        paymentStrategies = new HashMap<>();
+//        for (PaymentStrategy strategy : strategyList) {
+//            String beanName = strategy.getClass().getAnnotation(Component.class).value();
+//            //cashOnDelivery
+//            paymentStrategies.put(beanName, strategy);
+//        }
+//    }
 
 
     public PaymentEntity doPayment(String method, String request) throws JsonProcessingException {
         if (method.equals("CreditCard")) {
             CreditCardDto codDto = objectMapper.readValue(request, CreditCardDto.class);
-           return processPayment(method,codDto);
+           return processPayment(new CreditCardPayment(),codDto);
         }
         else if (method.equals("DebitCard")) {
             DebitCardDto debitCardDto = objectMapper.readValue(request, DebitCardDto.class);
-           return processPayment(method,debitCardDto);
+           return processPayment(new DebitCardPayment(),debitCardDto);
         }
         else if (method.equals("UPI")) {
             UpiDto debitCardDto = objectMapper.readValue(request, UpiDto.class);
-           return processPayment(method,debitCardDto);
+           return processPayment(new UpiPayment(),debitCardDto);
         }
         else if (method.equals("CashonDelivery")) {
             CashOnDeliveryDto debitCardDto = objectMapper.readValue(request, CashOnDeliveryDto.class);
-            return processPayment(method,debitCardDto);
+            return processPayment(new CashOnDelivery(),debitCardDto);
         }
         else {
             return null;
         }
     }
-    public PaymentEntity processPayment(String method, PaymentDto dto) {
-        PaymentStrategy strategy = paymentStrategies.get(method);
+    public PaymentEntity processPayment(PaymentStrategy strategy, PaymentDto dto) {
+//        PaymentStrategy strategy = paymentStrategies.get(method);
         if (strategy == null) {
-            throw new IllegalArgumentException("Unsupported payment method: " + method);
+            throw new IllegalArgumentException("Unsupported payment method: ");
         }
         PaymentEntity result=null;
         if(strategy.pay(dto.getAmount())){
@@ -69,7 +70,7 @@ public class PaymentService {
             payment.setRestaurantID(dto.getRestaurantID());
             payment.setOrderID(dto.getOrderID());
             payment.setCustomerID(dto.getCustomerID());
-            payment.setTypeOfPayment(method);
+            payment.setTypeOfPayment(strategy.getClass().getAnnotation(Component.class).value());
             result= paymentRepository.save(payment);
             if(result.getStatus()==PaymentStatus.SUCCESS){
 

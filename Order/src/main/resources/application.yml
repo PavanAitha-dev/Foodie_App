@@ -5,7 +5,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/Order_db
     username: postgres
-    password: 1221
+    password: root
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -38,8 +38,12 @@ feign:
 
 
 # Optional: logging config
-#logging:
-#  level:
+logging:
+  level:
+    root: info                          # Global log level
+    com.improveId.Order.service: debug         # Enable DEBUG logs for OrderService
+  file:
+    name: logs/order-service.log
 #    org.hibernate.SQL: DEBUG
 #    org.hibernate.type.descriptor.sql: TRACE
 management:
@@ -58,3 +62,18 @@ management:
       show-details: always
 jwt:
   secret: 0123456789&abcdefghijklmnopqrstuvwxyz&9876543210
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      feignCircuitBreaker:
+        registerHealthIndicator: true
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 10s
+        failureRateThreshold: 50
+        slowCallRateThreshold: 100
+        slowCallDurationThreshold: 2s
